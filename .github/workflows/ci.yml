@@ -94,7 +94,6 @@ jobs:
                "Windows" = "x86_64-pc-windows-msvc"
              }.${{ runner.os }}
           $basename = "sccache-$version-$platform"
-          chmod u+x $basename/sccache
           $url = "https://github.com/mozilla/sccache/releases/download/" +
                  "$version/$basename.tar.gz"
           cd ~
