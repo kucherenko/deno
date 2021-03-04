@@ -83,7 +83,7 @@ jobs:
       - name: Install and start sccache
         shell: pwsh
         env:
-          SCCACHE_DIR: ${{ github.workspace }}/target/sccache
+          SCCACHE_DIR: ${{ github.workspace }}/_sccache
           SCCACHE_CACHE_SIZE: 128M
           SCCACHE_IDLE_TIMEOUT: 0
         run: |
