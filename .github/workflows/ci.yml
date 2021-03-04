@@ -74,7 +74,7 @@ jobs:
 
       - uses: Swatinem/rust-cache@v1
 
-      - name: sccache
+      - name: load sccache from github
         uses: actions/cache@v2
         with:
           path: ${{ github.workspace }}/_sccache
@@ -89,7 +89,7 @@ jobs:
         shell: pwsh
         env:
           SCCACHE_DIR: ${{ github.workspace }}/_sccache
-          SCCACHE_CACHE_SIZE: 128M
+          SCCACHE_CACHE_SIZE: 1500M
           SCCACHE_IDLE_TIMEOUT: 0
         run: |
           $version = "v0.2.15"
