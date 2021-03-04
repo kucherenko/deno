@@ -72,13 +72,27 @@ jobs:
           mkdir -p target/release
           tar --exclude=.cargo_home --exclude=".git*" --exclude=target --exclude=third_party/prebuilt -czvf target/release/deno_src.tar.gz -C .. deno
 
-      - uses: Swatinem/rust-cache@v1
+      - name: Target Cache
+        uses: actions/cache@v2
+        with:
+          # Note: rusty_v8 targets always get get rebuilt, and their outputs
+          # ('librusty_v8.rlib', the whole 'gn_out' directory, etc.) can be
+          # quite big, so we cache only those subdirectories of
+          # target/{debug|release} that contain the build output for crates that
+          # come from the registry. By additionally saving the sccache cache
+          # directory it's still possible to build v8 fast.
+          path: |-
+						~/.cargo/registry/index
+						~/.cargo/registry/cache
+						~/.cargo/git
+						target
+          key: target-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
 
-      - name: load sccache from github
+      - name: Sccache Cache
         uses: actions/cache@v2
         with:
           path: ${{ github.workspace }}/_sccache
-          key: sccache-${{ runner.os }}
+          key: sccache-${{ runner.os }}-${{ env.GITHUB_JOB }}
 
       - name: Install rust
         uses: hecrj/setup-rust-action@v1
