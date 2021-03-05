@@ -75,18 +75,20 @@ jobs:
       - name: Target Cache
         uses: actions/cache@v2
         with:
-          path: |-
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
+          path: |
+            ~/.cargo/registry
             ~/.cargo/git
-            target
-          key: target-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
+            .cargo_home
+            target/
+          key: target-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'Cargo.toml') }}
+          restore-keys: target-${{ runner.os }}
 
       - name: Sccache Cache
         uses: actions/cache@v2
         with:
           path: ${{ github.workspace }}/_sccache
-          key: sccache-${{ runner.os }}
+          key: sccache-${{ runner.os }}-${{ hashFiles('**/*.rs') }}
+          restore-keys: sccache-${{ runner.os }}
 
       - name: Install rust
         uses: hecrj/setup-rust-action@v1
